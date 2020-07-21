@@ -61,7 +61,7 @@ with open("/media/sf_Shared_folder/singleTile.dot", "w") as file:
         assert len([x for x in list(wire.uphill) + list(wire.downhill) if x.loc == tile.loc]) > 0
         assert wire.id not in routingWiresIds
         routingWiresIds[wire.id] = counter
-        file.write("\t" + str(counter) + " [label=\"" + labelText + "\"];\n")
+        file.write("\t" + str(counter) + " [label=\"" + labelText + "\", name=\"" + graph.to_str(wire.id) + "\"];\n")
         counter += 1
         for pin in wire.belsDownhill:  # remember, this is illogical. Downhill means itś coming from below.
             file.write(
@@ -74,14 +74,14 @@ with open("/media/sf_Shared_folder/singleTile.dot", "w") as file:
             x.data().sink.loc == tile.loc or x.data().sink.loc == pytrellis.Location(13, 6))]:
         assert arc.id not in routingArcIds
         routingArcIds[arc.id] = counter
-        file.write("\t" + str(counter) + " [label=\"arc\", configurable=" + str(1 if arc.configurable else 0) + "];\n")
+        file.write("\t" + str(counter) + " [label=\"arc\", configurable=\"" + str(1 if arc.configurable else 0) + "\"];\n")
         counter += 1
         file.write("\t" + str(routingWiresIds[arc.source.id]) + " -> " + str(routingArcIds[arc.id]) + ";\n")
         if arc.sink.loc == pytrellis.Location(13, 6) and arc.sink.id not in foreignRoutingWiresIds:
             if arc.sink.id not in foreignRoutingWiresIds:
                 assert arc.sink.id not in foreignRoutingWiresIds
                 foreignRoutingWiresIds[arc.sink.id] = counter
-                file.write("\t" + str(foreignRoutingWiresIds[arc.sink.id]) + " [label=\"matchto_" + str(toBeMatchedCounter) + "\"];\n")
+                file.write("\t" + str(foreignRoutingWiresIds[arc.sink.id]) + " [label=\"matchto_" + str(toBeMatchedCounter) + "\", name=\"" + graph.to_str(arc.sink.id) + "\"];\n")
                 counter += 1
                 toBeMatchedCounter += 1
             file.write("\t" + str(routingArcIds[arc.id]) + " -> " + str(foreignRoutingWiresIds[arc.sink.id]) + ";\n")
