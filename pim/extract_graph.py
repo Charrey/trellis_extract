@@ -29,7 +29,7 @@ for arc in [x.data() for x in tile.arcs if x.data().source.loc == tile.loc and (
         toBeMatched.add(arc.sink.id)
 toBeMatchedCounter = 0
 
-with open("/media/sf_Shared_folder/singleTile.dot", "w") as file:
+with open("/media/sf_Shared_Folder/singleTile.dot", "w") as file:
     file.write("strict digraph G {\n")
     for bel in [x.data() for x in tile.bels]:
         assert bel.name not in routingBelIds
